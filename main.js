@@ -1,6 +1,15 @@
+let APP_ID = process.env.APP_ID
+
+let token = null;
+let uid = String(Math.floor(Math.random()*10000));
+
+let client;
+let channel;
+
 let localStream;
 let remoteStream;
 let peerConnection; 
+
 
 const servers = {
     iceservers: [
@@ -17,6 +26,10 @@ const constraints = {
 
 let init = async () => {
     try {
+
+        client = await AgoraRTM.createInstance(APP_ID);
+        await client.login({uid,token});
+        
         localStream = await navigator.mediaDevices.getUserMedia(constraints);
         console.log('Got MediaStream Access!');
         document.getElementById('user-1').srcObject = localStream;
